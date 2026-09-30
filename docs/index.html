@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ajude a Raposa 🦊🍇</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(135deg,#fff5d6,#e7f7df);color:#333;min-height:100vh;display:grid;place-items:center;padding:18px}.card{width:min(720px,100%);background:#fff;border-radius:24px;padding:28px;box-shadow:0 12px 35px #0002;text-align:center}h1{color:#a84c12;margin:0 0 8px;font-size:clamp(30px,7vw,48px)}h2{font-size:clamp(22px,5vw,30px)}.fox{font-size:70px}.sub{font-size:18px;line-height:1.5}.score{font-weight:bold;color:#6c3aa8;margin:12px}.answers{display:grid;gap:12px;margin-top:22px}.btn,.answer{border:0;border-radius:15px;padding:15px 18px;font-size:18px;font-weight:bold;cursor:pointer}.btn{background:#7c4bb3;color:white}.answer{background:#f2eafa;color:#44205f}.answer:hover{filter:brightness(.97)}.correct{background:#d9f5d5!important;color:#185d18}.wrong{background:#ffd9d9!important;color:#8b1e1e}.feedback{min-height:34px;font-size:19px;font-weight:bold;margin:18px 0 4px}.progress{height:10px;background:#eee;border-radius:99px;overflow:hidden;margin:16px 0}.bar{height:100%;background:#7c4bb3;transition:.3s}.story{background:#fff8e8;border-radius:16px;padding:15px;text-align:left;line-height:1.45;margin:16px 0}:focus-visible{outline:3px solid #a84c12;outline-offset:4px}.answer:disabled{cursor:default;opacity:1}.hidden{display:none}.small{font-size:14px;color:#666;margin-top:18px}
+</style></head><body>
+<main class="card">
+<section id="start"><div class="fox">🦊🍇</div><h1>Ajude a Raposa 🦊🍇</h1><p class="sub"><b>Língua Portuguesa — 6º ano</b><br>Leia, pense e responda às perguntas sobre <i>A Raposa e as Uvas</i> e os pronomes.</p><div class="story">Uma raposa viu lindos cachos de uvas pendurados bem alto. Tentou alcançá-los várias vezes, mas não conseguiu. Ao desistir, afastou-se dizendo que aquelas uvas provavelmente estavam verdes e azedas.</div><button class="btn" onclick="startGame()">Começar 🎮</button></section>
+<section id="game" class="hidden"><div class="score" id="score">Pontos: 0</div><div class="progress"><div class="bar" id="bar"></div></div><h2 id="question" tabindex="-1"></h2><div class="answers" id="answers"></div><div class="feedback" id="feedback" role="status" aria-live="polite"></div><button id="next" class="btn hidden" onclick="nextQuestion()">Próxima ➜</button></section>
+<section id="end" class="hidden"><div class="fox">🏆🦊🍇</div><h1>Missão cumprida!</h1><h2 id="result" tabindex="-1"></h2><p id="message" class="sub"></p><button class="btn" onclick="startGame()">Jogar novamente</button></section>
+<p class="small">Atividade educativa • Fábula atribuída a Esopo • Reconto didático</p>
+</main>
+<script>
+const qs=[
+{q:'1. Quem é a personagem principal da fábula?',a:['A raposa','O coelho','O cachorro'],c:0},
+{q:'2. O que a raposa queria alcançar?',a:['Maçãs','Uvas','Bananas'],c:1},
+{q:'3. Por que a raposa não conseguiu pegar as uvas?',a:['Porque estavam muito altas','Porque estava com sono','Porque estavam no chão'],c:0},
+{q:'4. Na frase “ELA tentou alcançar as uvas”, a palavra ELA é:',a:['Pronome pessoal','Pronome possessivo','Pronome demonstrativo'],c:0},
+{q:'5. Na expressão “AQUELAS uvas”, AQUELAS é:',a:['Pronome pessoal','Pronome possessivo','Pronome demonstrativo'],c:2}
+];let i=0,points=0,locked=false;
+function startGame(){i=0;points=0;document.getElementById('start').classList.add('hidden');document.getElementById('end').classList.add('hidden');document.getElementById('game').classList.remove('hidden');render()}
+function render(){locked=false;document.getElementById('score').textContent='Pontos: '+points;document.getElementById('bar').style.width=(i/qs.length*100)+'%';document.getElementById('question').textContent=qs[i].q;document.getElementById('feedback').textContent='';document.getElementById('next').classList.add('hidden');const box=document.getElementById('answers');box.innerHTML='';qs[i].a.forEach((x,n)=>{const b=document.createElement('button');b.className='answer';b.textContent=x;b.onclick=()=>answer(n,b);box.appendChild(b)});document.getElementById('question').focus()}
+function answer(n,b){if(locked)return;locked=true;const buttons=[...document.querySelectorAll('.answer')];buttons.forEach(button=>button.disabled=true);if(n===qs[i].c){points+=10;b.classList.add('correct');document.getElementById('feedback').textContent='✅ Muito bem! Resposta correta.'}else{b.classList.add('wrong');buttons[qs[i].c].classList.add('correct');document.getElementById('feedback').textContent='💡 A resposta correta é: '+qs[i].a[qs[i].c]+'.'}document.getElementById('score').textContent='Pontos: '+points;document.getElementById('next').textContent=i===qs.length-1?'Ver resultado 🏆':'Próxima ➜';document.getElementById('next').classList.remove('hidden')}
+function nextQuestion(){if(!locked||i>=qs.length)return;i++;if(i<qs.length)render();else finish()}
+function finish(){document.getElementById('game').classList.add('hidden');document.getElementById('end').classList.remove('hidden');document.getElementById('result').textContent='Você fez '+points+' de 50 pontos!';document.getElementById('message').textContent=points===50?'Excelente! Você ajudou a raposa e acertou tudo!':points>=30?'Muito bem! Você aprendeu bastante!':'Bom esforço! Jogue novamente para praticar mais.';document.getElementById('result').focus()}
+</script></body></html>
