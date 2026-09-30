@@ -1,107 +1,28 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ajude a Raposa - 6º Ano</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ajude a Raposa 🦊🍇</title>
 <style>
-*{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#fff7e8;color:#2c2c2c;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:18px}
-.card{width:min(680px,100%);background:white;border:2px solid #ead8bb;border-radius:22px;padding:28px;text-align:center;box-shadow:0 8px 24px rgba(0,0,0,.08)}
-.emoji{font-size:64px;margin:4px 0 12px}
-h1{font-size:32px;margin:8px 0}
-p{font-size:19px;line-height:1.4}
-button{width:100%;padding:16px;margin:8px 0;border:2px solid #e2cda8;border-radius:14px;background:#fff;font-size:18px;font-weight:700;cursor:pointer}
-button:hover{background:#fff4d7}
-.primary{background:#ffd86b;border-color:#e3b83c}
-.primary:hover{background:#ffcf4d}
-.top{display:flex;justify-content:space-between;gap:12px;font-weight:700;margin-bottom:20px}
-.question{text-align:left;font-size:24px;font-weight:700;margin:15px 0}
-.feedback{min-height:32px;font-size:19px;font-weight:700;margin:10px 0}
-.hidden{display:none}
-.correct{background:#e8f7e8!important;border-color:#69a969!important}
-.wrong{background:#fdeaea!important;border-color:#c86a6a!important}
-small{display:block;margin-top:18px;color:#666}
-</style>
-</head>
-<body>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(135deg,#fff5d6,#e7f7df);color:#333;min-height:100vh;display:grid;place-items:center;padding:18px}.card{width:min(720px,100%);background:#fff;border-radius:24px;padding:28px;box-shadow:0 12px 35px #0002;text-align:center}h1{color:#a84c12;margin:0 0 8px;font-size:clamp(30px,7vw,48px)}h2{font-size:clamp(22px,5vw,30px)}.fox{font-size:70px}.sub{font-size:18px;line-height:1.5}.score{font-weight:bold;color:#6c3aa8;margin:12px}.answers{display:grid;gap:12px;margin-top:22px}.btn,.answer{border:0;border-radius:15px;padding:15px 18px;font-size:18px;font-weight:bold;cursor:pointer}.btn{background:#7c4bb3;color:white}.answer{background:#f2eafa;color:#44205f}.answer:hover{filter:brightness(.97)}.correct{background:#d9f5d5!important;color:#185d18}.wrong{background:#ffd9d9!important;color:#8b1e1e}.feedback{min-height:34px;font-size:19px;font-weight:bold;margin:18px 0 4px}.progress{height:10px;background:#eee;border-radius:99px;overflow:hidden;margin:16px 0}.bar{height:100%;background:#7c4bb3;transition:.3s}.story{background:#fff8e8;border-radius:16px;padding:15px;text-align:left;line-height:1.45;margin:16px 0}.hidden{display:none}.small{font-size:14px;color:#666;margin-top:18px}
+</style></head><body>
 <main class="card">
-<section id="start">
-<div class="emoji">🦊 🍇</div>
-<h1>Ajude a Raposa!</h1>
-<p>Responda 5 perguntas e ajude a raposa a chegar até as uvas.</p>
-<button class="primary" id="startBtn">COMEÇAR</button>
-<small>Língua Portuguesa • 6º ano</small>
-</section>
-
-<section id="game" class="hidden">
-<div class="top"><span id="progress"></span><span id="score">⭐ 0 pontos</span></div>
-<div class="emoji">🦊 ➜ 🍇</div>
-<div class="question" id="question"></div>
-<div id="answers"></div>
-<div class="feedback" id="feedback" aria-live="polite"></div>
-<button class="primary hidden" id="nextBtn">PRÓXIMA</button>
-</section>
-
-<section id="end" class="hidden">
-<div class="emoji">🦊 🏆 🍇</div>
-<h1>Missão cumprida!</h1>
-<p>Você ajudou a raposa a chegar às uvas!</p>
-<p id="result" style="font-weight:700;font-size:24px"></p>
-<button class="primary" id="restartBtn">JOGAR NOVAMENTE</button>
-</section>
+<section id="start"><div class="fox">🦊🍇</div><h1>Ajude a Raposa!</h1><p class="sub"><b>Língua Portuguesa — 6º ano</b><br>Leia, pense e responda às perguntas sobre <i>A Raposa e as Uvas</i> e os pronomes.</p><div class="story">Uma raposa viu lindos cachos de uvas pendurados bem alto. Tentou alcançá-los várias vezes, mas não conseguiu. Ao desistir, afastou-se dizendo que aquelas uvas provavelmente estavam verdes e azedas.</div><button class="btn" onclick="startGame()">Começar 🎮</button></section>
+<section id="game" class="hidden"><div class="score" id="score">Pontos: 0</div><div class="progress"><div class="bar" id="bar"></div></div><h2 id="question"></h2><div class="answers" id="answers"></div><div class="feedback" id="feedback"></div><button id="next" class="btn hidden" onclick="nextQuestion()">Próxima ➜</button></section>
+<section id="end" class="hidden"><div class="fox">🏆🦊🍇</div><h1>Missão cumprida!</h1><h2 id="result"></h2><p id="message" class="sub"></p><button class="btn" onclick="startGame()">Jogar novamente</button></section>
+<p class="small">Atividade educativa • Fábula atribuída a Esopo • Reconto didático</p>
 </main>
-
 <script>
-const questions=[
- {q:"Quem é a personagem principal da fábula?",a:["Raposa","Coelho","Cachorro"],c:0},
- {q:"O que a raposa queria alcançar?",a:["Maçãs","Uvas","Bananas"],c:1},
- {q:"Por que a raposa não conseguiu pegar as uvas?",a:["Estavam muito altas","Ela estava com sono","Estavam no chão"],c:0},
- {q:'Na frase “ELA olhou para os cachos”, ELA é:',a:["Pronome pessoal","Pronome possessivo","Pronome demonstrativo"],c:0},
- {q:'Na expressão “AQUELES cachos”, AQUELES é:',a:["Pronome pessoal","Pronome possessivo","Pronome demonstrativo"],c:2}
-];
-let current=0,hits=0,locked=false;
-const $=id=>document.getElementById(id);
-function showQuestion(){
- locked=false;$("feedback").textContent="";$("nextBtn").classList.add("hidden");
- $("progress").textContent=`Pergunta ${current+1} de ${questions.length}`;
- $("score").textContent=`⭐ ${hits*10} pontos`;
- $("question").textContent=questions[current].q;
- $("answers").innerHTML="";
- questions[current].a.forEach((answer,i)=>{
-   const b=document.createElement("button");b.textContent=answer;
-   b.addEventListener("click",()=>answerQuestion(i,b));
-   $("answers").appendChild(b);
- });
-}
-function answerQuestion(i,button){
- if(locked)return;locked=true;
- const buttons=[...$("answers").querySelectorAll("button")];
- buttons.forEach(b=>b.disabled=true);
- if(i===questions[current].c){
-   hits++;button.classList.add("correct");$("feedback").textContent="✅ Muito bem!";
- }else{
-   button.classList.add("wrong");buttons[questions[current].c].classList.add("correct");
-   $("feedback").textContent="❌ Quase! Veja a resposta correta.";
- }
- $("score").textContent=`⭐ ${hits*10} pontos`;
- $("nextBtn").textContent=current===questions.length-1?"VER RESULTADO":"PRÓXIMA";
- $("nextBtn").classList.remove("hidden");
-}
-$("startBtn").addEventListener("click",()=>{
- $("start").classList.add("hidden");$("game").classList.remove("hidden");current=0;hits=0;showQuestion();
-});
-$("nextBtn").addEventListener("click",()=>{
- current++;
- if(current<questions.length)showQuestion();
- else{
-   $("game").classList.add("hidden");$("end").classList.remove("hidden");
-   $("result").textContent=`Você acertou ${hits} de ${questions.length} — ${hits*10} pontos!`;
- }
-});
-$("restartBtn").addEventListener("click",()=>{
- $("end").classList.add("hidden");$("start").classList.remove("hidden");
-});
-</script>
-</body>
-</html>
+const qs=[
+{q:'1. Quem é a personagem principal da fábula?',a:['A raposa','O coelho','O cachorro'],c:0},
+{q:'2. O que a raposa queria alcançar?',a:['Maçãs','Uvas','Bananas'],c:1},
+{q:'3. Por que a raposa não conseguiu pegar as uvas?',a:['Porque estavam muito altas','Porque estava com sono','Porque estavam no chão'],c:0},
+{q:'4. Na frase “ELA tentou alcançar as uvas”, a palavra ELA é:',a:['Pronome pessoal','Pronome possessivo','Pronome demonstrativo'],c:0},
+{q:'5. Na expressão “AQUELAS uvas”, AQUELAS é:',a:['Pronome pessoal','Pronome possessivo','Pronome demonstrativo'],c:2}
+];let i=0,points=0,locked=false;
+function startGame(){i=0;points=0;document.getElementById('start').classList.add('hidden');document.getElementById('end').classList.add('hidden');document.getElementById('game').classList.remove('hidden');render()}
+function render(){locked=false;document.getElementById('score').textContent='Pontos: '+points;document.getElementById('bar').style.width=(i/qs.length*100)+'%';document.getElementById('question').textContent=qs[i].q;document.getElementById('feedback').textContent='';document.getElementById('next').classList.add('hidden');const box=document.getElementById('answers');box.innerHTML='';qs[i].a.forEach((x,n)=>{const b=document.createElement('button');b.className='answer';b.textContent=x;b.onclick=()=>answer(n,b);box.appendChild(b)})}
+function answer(n,b){if(locked)return;locked=true;const buttons=[...document.querySelectorAll('.answer')];if(n===qs[i].c){points+=10;b.classList.add('correct');document.getElementById('feedback').textContent='✅ Muito bem! Resposta correta.'}else{b.classList.add('wrong');buttons[qs[i].c].classList.add('correct');document.getElementById('feedback').textContent='💡 Quase! Veja a resposta correta.'}document.getElementById('score').textContent='Pontos: '+points;document.getElementById('next').classList.remove('hidden')}
+function nextQuestion(){i++;if(i<qs.length)render();else finish()}
+function finish(){document.getElementById('game').classList.add('hidden');document.getElementById('end').classList.remove('hidden');document.getElementById('result').textContent='Você fez '+points+' de 50 pontos!';document.getElementById('message').textContent=points===50?'Excelente! Você ajudou a raposa e acertou tudo!':points>=30?'Muito bem! Você aprendeu bastante!':'Bom esforço! Jogue novamente para praticar mais.'}
+</script></body></html>
